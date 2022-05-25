@@ -1,0 +1,5 @@
+﻿  Using triplet "x86-windows" from "C:\json\vcpkg\installed\x86-windows\"
+  funkcije.c
+C:\Users\PC\source\repos\Hotel\Hotel\funkcije.c(110,14): warning C4098: 'brisanjeRezervacija': 'void' function returning a value
+C:\Users\PC\source\repos\Hotel\Hotel\funkcije.c(135,14): warning C4098: 'azuriranjeRezervacija': 'void' function returning a value
+  Hotel.vcxproj -> C:\Users\PC\source\repos\Hotel\Debug\Hotel.exe
