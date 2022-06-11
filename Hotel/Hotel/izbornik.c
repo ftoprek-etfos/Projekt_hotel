@@ -37,7 +37,7 @@ int izbornik(const char* const imeDatoteke) {
 		}
 		break;
 	case 3:
-		brisanjeRezervacija(pronadjenaRezervacija, poljeRezervacija, imeDatoteke);
+		brisanjeRezervacija(&pronadjenaRezervacija, poljeRezervacija, imeDatoteke);
 		break;
 	case 4:
 		pronadjenaRezervacija = (REZERVACIJA*)pretrazivanjeRezervacija(poljeRezervacija);

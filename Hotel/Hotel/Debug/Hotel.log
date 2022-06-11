@@ -1,5 +1,13 @@
-﻿  Using triplet "x86-windows" from "C:\json\vcpkg\installed\x86-windows\"
-  funkcije.c
-C:\Users\PC\source\repos\Hotel\Hotel\funkcije.c(110,14): warning C4098: 'brisanjeRezervacija': 'void' function returning a value
-C:\Users\PC\source\repos\Hotel\Hotel\funkcije.c(135,14): warning C4098: 'azuriranjeRezervacija': 'void' function returning a value
-  Hotel.vcxproj -> C:\Users\PC\source\repos\Hotel\Debug\Hotel.exe
+﻿  funkcije.c
+C:\Users\student\Desktop\Projekt_hotel-main\Hotel\Hotel\funkcije.c(77,72): warning C4028: formal parameter 1 different from declaration
+C:\Users\student\Desktop\Projekt_hotel-main\Hotel\Hotel\funkcije.c(103,20): warning C4047: 'function': 'char *' differs in levels of indirection from 'int'
+C:\Users\student\Desktop\Projekt_hotel-main\Hotel\Hotel\funkcije.c(103,20): warning C4024: 'strcpy': different types for formal and actual parameter 1
+C:\Users\student\Desktop\Projekt_hotel-main\Hotel\Hotel\funkcije.c(103,41): warning C4047: 'function': 'char *' differs in levels of indirection from 'int'
+C:\Users\student\Desktop\Projekt_hotel-main\Hotel\Hotel\funkcije.c(103,41): warning C4024: 'toLower': different types for formal and actual parameter 1
+C:\Users\student\Desktop\Projekt_hotel-main\Hotel\Hotel\funkcije.c(117,129): warning C4028: formal parameter 3 different from declaration
+C:\Users\student\Desktop\Projekt_hotel-main\Hotel\Hotel\funkcije.c(125,14): warning C4098: 'brisanjeRezervacija': 'void' function returning a value
+C:\Users\student\Desktop\Projekt_hotel-main\Hotel\Hotel\funkcije.c(145,134): warning C4028: formal parameter 3 different from declaration
+C:\Users\student\Desktop\Projekt_hotel-main\Hotel\Hotel\funkcije.c(153,14): warning C4098: 'azuriranjeRezervacija': 'void' function returning a value
+C:\Users\student\Desktop\Projekt_hotel-main\Hotel\Hotel\funkcije.c(191,1): warning C4028: formal parameter 1 different from declaration
+LINK : fatal error LNK1168: cannot open C:\Users\student\Desktop\Projekt_hotel-main\Hotel\Debug\Hotel.exe for writing
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(810,5): error MSB6006: "link.exe" exited with code 1168.

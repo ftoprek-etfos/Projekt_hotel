@@ -4,9 +4,18 @@
 #include <string.h>
 #include "strukture.h"
 #include "funkcije.h"
+#include <ctype.h>
 static int brojRezervacija = 0;
 static int sobe[10] = {0,0,0,0,0,0,0,0,0,0};
 
+char* toLower(char* str)
+{
+	for (int i = 0; str[i]; i++) {
+		str[i] = tolower(str[i]);
+	}
+
+	return str;
+}
 void unosRezervacija(const char* const imeDatoteke) {
 	FILE* pF = fopen(imeDatoteke, "rb+");
 	if (pF == NULL) {
@@ -20,9 +29,11 @@ void unosRezervacija(const char* const imeDatoteke) {
 	getchar();
 	printf("Unesite ime gosta!\n");
 	scanf("%19[^\n]", temp.ime_gosta);
+	strcpy(temp.ime_gosta, toLower(temp.ime_gosta));
 	printf("Unesite prezime gosta!\n");
 	getchar();
 	scanf("%19[^\n]", temp.prezime_gosta);
+	strcpy(temp.prezime_gosta, toLower(temp.prezime_gosta));
 	printf("Unesite broj sobe!\n");
 	getchar();
 	scanf("%d", &temp.brojSobe);
@@ -40,8 +51,8 @@ void unosRezervacija(const char* const imeDatoteke) {
 	rewind(pF);
 	brojRezervacija++;
 	fwrite(&brojRezervacija, sizeof(int), 1, pF);
-	fseek(pF, sizeof(int), SEEK_END);
-	fwrite(&sobe, sizeof(int), 1, pF);
+	fseek(pF, sizeof(int)* brojRezervacija, SEEK_END);
+	fwrite(&sobe, sizeof(int) * brojRezervacija, 1, pF);
 	fclose(pF);
 }
 void* ucitavanjeRezervacija(const char* const imeDatoteke) {
@@ -60,6 +71,8 @@ void* ucitavanjeRezervacija(const char* const imeDatoteke) {
 	}
 	fseek(pF, sizeof(int), SEEK_SET);
 	fread(poljeRezervacija, sizeof(REZERVACIJA), brojRezervacija, pF);
+	fseek(pF, sizeof(int), SEEK_END);
+	fread(&sobe, sizeof(int)*brojRezervacija, 1, pF);
 	fclose(pF);
 	return poljeRezervacija;
 }
@@ -89,6 +102,11 @@ void* pretrazivanjeRezervacija(REZERVACIJA* const poljeRezervacija) {
 	printf("Unesite broj sobe.\n");
 	getchar();
 	scanf("%d", &trazenaSoba);
+	if (isalpha(trazenaSoba))
+	{
+		printf("Unjeli ste znak umjesto broja sobe!");
+		return NULL;
+	}
 	for (i = 0; i < brojRezervacija; i++)
 	{
 		if (trazenaSoba == poljeRezervacija[i].brojSobe) {
@@ -102,7 +120,7 @@ int izlazIzPrograma(REZERVACIJA* poljeRezervacija) {
 	free(poljeRezervacija);
 	return 0;
 }
-void brisanjeRezervacija(REZERVACIJA* const rezervacijaZaBrisanje, REZERVACIJA* const poljeRezervacija, const char* imeDatoteke){
+void brisanjeRezervacija(REZERVACIJA** const rezervacijaZaBrisanje, REZERVACIJA* const poljeRezervacija, const char* imeDatoteke){
 	if (poljeRezervacija == NULL) {
 		printf("Polje rezervacija je prazno!\n");
 		return;
@@ -112,23 +130,26 @@ void brisanjeRezervacija(REZERVACIJA* const rezervacijaZaBrisanje, REZERVACIJA* 
 		printf("Molimo pretrazite rezervaciju koju zelite obrisati.\n");
 		return NULL;
 	}
-	FILE* pF = fopen(imeDatoteke, "rb+");
+	FILE* pF = fopen(imeDatoteke, "wb");
 	if (pF == NULL) {
-		perror("Brisanje rezervacije nije moguce\n");
+		perror("Brisanje studenta iz datoteke studenti.bin");
 		exit(EXIT_FAILURE);
 	}
-	int a = brojRezervacija - 1;
-	rewind(pF);
-	fwrite(&a, sizeof(int), 1, pF);
-	for (int i = 0; i < brojRezervacija; i++)
+	fseek(pF, sizeof(int), SEEK_SET);
+	int i;
+	int noviBrojac = 0;
+	for (i = 0; i < brojRezervacija; i++)
 	{
-		if (poljeRezervacija[i].id != rezervacijaZaBrisanje->id)
-		{
-			fseek(pF, sizeof(REZERVACIJA) * i, SEEK_CUR);
-			fwrite(&poljeRezervacija[i], sizeof(REZERVACIJA), 1, pF);
+		if (*rezervacijaZaBrisanje !=	(poljeRezervacija + i)) {
+			fwrite((poljeRezervacija + i), sizeof(REZERVACIJA), 1, pF);
+			noviBrojac++;
 		}
 	}
-	printf("Rezervacija sa id-om %d obrisana.\n", rezervacijaZaBrisanje->id);
+	rewind(pF);
+	fwrite(&noviBrojac, sizeof(int), 1, pF);
+	fclose(pF);
+	printf("Rezervacija obrisana.\n");
+	*rezervacijaZaBrisanje = NULL;
 }
 void azuriranjeRezervacija(REZERVACIJA* const rezervacijaZaAzuriranje, REZERVACIJA* const poljeRezervacija, const char* imeDatoteke) {
 	if (poljeRezervacija == NULL) {
@@ -172,7 +193,7 @@ void azuriranjeRezervacija(REZERVACIJA* const rezervacijaZaAzuriranje, REZERVACI
 	default:
 		uvijet = 0;
 	}
-	fwrite(&rezervacijaZaAzuriranje, sizeof(REZERVACIJA), 1, pF);
+	fwrite(rezervacijaZaAzuriranje, sizeof(REZERVACIJA), 1, pF);
 	fclose(pF);
 }
 void brisanjeDatoteke(const char* imeDatoteke)
